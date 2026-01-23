@@ -1,0 +1,32 @@
+// Demo 12: Decision Tree - Bug Triage
+// CLI: simple_graphviz render 12_decision_tree.dot -o 12_decision_tree.svg
+digraph BugTriage {
+    rankdir=TB
+    node [fontname="Arial"]
+
+    root [label="New Bug\nReport", shape=box, style=filled, fillcolor=lightyellow]
+
+    q1 [label="Security\nVulnerability?", shape=diamond]
+    q2 [label="Production\nImpact?", shape=diamond]
+    q3 [label="Workaround\nExists?", shape=diamond]
+    q4 [label="User\nFacing?", shape=diamond]
+    q5 [label="Affects\nCore Feature?", shape=diamond]
+
+    p1 [label="P1 - Critical\nFix Immediately", shape=box, style=filled, fillcolor=red, fontcolor=white]
+    p2 [label="P2 - High\nFix This Sprint", shape=box, style=filled, fillcolor=orange]
+    p3 [label="P3 - Medium\nFix Next Sprint", shape=box, style=filled, fillcolor=yellow]
+    p4 [label="P4 - Low\nBacklog", shape=box, style=filled, fillcolor=lightgreen]
+    p5 [label="P5 - Trivial\nNice to Have", shape=box, style=filled, fillcolor=lightgray]
+
+    root -> q1
+    q1 -> p1 [label="Yes"]
+    q1 -> q2 [label="No"]
+    q2 -> p1 [label="Yes"]
+    q2 -> q3 [label="No"]
+    q3 -> q4 [label="Yes"]
+    q3 -> p2 [label="No"]
+    q4 -> p3 [label="Yes"]
+    q4 -> q5 [label="No"]
+    q5 -> p3 [label="Yes"]
+    q5 -> p4 [label="No"]
+}

@@ -1,0 +1,48 @@
+// Demo 16: QuickSort Algorithm Flowchart
+// CLI: simple_graphviz render 16_sorting_algorithm.dot -o 16_sorting_algorithm.svg
+digraph QuickSort {
+    rankdir=TB
+    node [fontname="Arial", fontsize=10]
+
+    start [shape=ellipse, label="quicksort(arr, low, high)", style=filled, fillcolor=lightgreen]
+    check [shape=diamond, label="low < high?"]
+    partition [shape=box, label="pivot = partition(arr, low, high)"]
+    left [shape=box, label="quicksort(arr, low, pivot-1)"]
+    right [shape=box, label="quicksort(arr, pivot+1, high)"]
+    done [shape=ellipse, label="return", style=filled, fillcolor=lightpink]
+
+    start -> check
+    check -> partition [label="Yes"]
+    check -> done [label="No"]
+    partition -> left
+    left -> right
+    right -> done
+
+    // Partition subroutine
+    subgraph cluster_partition {
+        label="partition(arr, low, high)"
+        style=filled
+        fillcolor=lightyellow
+
+        p_start [shape=ellipse, label="Start"]
+        p_pivot [shape=box, label="pivot = arr[high]"]
+        p_init [shape=box, label="i = low - 1"]
+        p_loop [shape=diamond, label="j < high?"]
+        p_compare [shape=diamond, label="arr[j] <= pivot?"]
+        p_swap_inner [shape=box, label="i++\nswap(arr[i], arr[j])"]
+        p_inc_j [shape=box, label="j++"]
+        p_swap_final [shape=box, label="swap(arr[i+1], arr[high])"]
+        p_return [shape=ellipse, label="return i+1"]
+
+        p_start -> p_pivot
+        p_pivot -> p_init
+        p_init -> p_loop
+        p_loop -> p_compare [label="Yes"]
+        p_loop -> p_swap_final [label="No"]
+        p_compare -> p_swap_inner [label="Yes"]
+        p_compare -> p_inc_j [label="No"]
+        p_swap_inner -> p_inc_j
+        p_inc_j -> p_loop
+        p_swap_final -> p_return
+    }
+}

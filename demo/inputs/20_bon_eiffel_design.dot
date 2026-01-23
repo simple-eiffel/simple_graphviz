@@ -1,0 +1,35 @@
+// Demo 20: BON Diagram - Design Pattern (Observer)
+// CLI: simple_graphviz render 20_bon_eiffel_design.dot -o 20_bon_eiffel_design.svg
+digraph BONObserver {
+    rankdir=BT
+    node [shape=box, fontname="Courier", fontsize=9]
+
+    // Deferred classes (italic-style)
+    SUBJECT [label="SUBJECT*\n─────────────────\n+ observers: LIST[OBSERVER]\n─────────────────\n+ attach(o: OBSERVER)\n+ detach(o: OBSERVER)\n+ notify()*", style="filled,bold", fillcolor=lightyellow]
+
+    OBSERVER [label="OBSERVER*\n─────────────────\n─────────────────\n+ update(s: SUBJECT)*", style="filled,bold", fillcolor=lightyellow]
+
+    // Concrete classes
+    CONCRETE_SUBJECT [label="CONCRETE_SUBJECT\n─────────────────\n+ state: STATE\n─────────────────\n+ get_state: STATE\n+ set_state(s: STATE)\n+ notify()", style=filled, fillcolor=lightblue]
+
+    CONCRETE_OBSERVER_A [label="CONCRETE_OBSERVER_A\n─────────────────\n+ subject: SUBJECT\n+ observed_state: STATE\n─────────────────\n+ update(s: SUBJECT)", style=filled, fillcolor=lightgreen]
+
+    CONCRETE_OBSERVER_B [label="CONCRETE_OBSERVER_B\n─────────────────\n+ subject: SUBJECT\n+ observed_state: STATE\n─────────────────\n+ update(s: SUBJECT)", style=filled, fillcolor=lightgreen]
+
+    CLIENT [label="CLIENT\n─────────────────\n─────────────────\n+ run()", style=filled, fillcolor=lightgray]
+
+    // Inheritance (hollow arrow)
+    CONCRETE_SUBJECT -> SUBJECT [arrowhead=empty]
+    CONCRETE_OBSERVER_A -> OBSERVER [arrowhead=empty]
+    CONCRETE_OBSERVER_B -> OBSERVER [arrowhead=empty]
+
+    // Association
+    SUBJECT -> OBSERVER [label="observers *", arrowhead=open, style=dashed]
+    CONCRETE_OBSERVER_A -> CONCRETE_SUBJECT [label="subject", arrowhead=open, style=dashed]
+    CONCRETE_OBSERVER_B -> CONCRETE_SUBJECT [label="subject", arrowhead=open, style=dashed]
+
+    // Client uses
+    CLIENT -> CONCRETE_SUBJECT [label="creates", arrowhead=vee, style=dotted]
+    CLIENT -> CONCRETE_OBSERVER_A [label="creates", arrowhead=vee, style=dotted]
+    CLIENT -> CONCRETE_OBSERVER_B [label="creates", arrowhead=vee, style=dotted]
+}

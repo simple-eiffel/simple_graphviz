@@ -1,0 +1,58 @@
+// Demo 13: Git Branching Strategy (GitFlow)
+// CLI: simple_graphviz render 13_git_branching.dot -o 13_git_branching.svg
+digraph GitFlow {
+    rankdir=LR
+    node [shape=circle, width=0.4, fixedsize=true, fontsize=8]
+    edge [arrowsize=0.7]
+
+    // Main branch
+    subgraph cluster_main {
+        label="main"
+        style=filled
+        fillcolor=lightgreen
+        m1 [label="1.0"]
+        m2 [label="1.1"]
+        m3 [label="1.2"]
+    }
+
+    // Develop branch
+    subgraph cluster_develop {
+        label="develop"
+        style=filled
+        fillcolor=lightblue
+        d1 [label=""]
+        d2 [label=""]
+        d3 [label=""]
+        d4 [label=""]
+        d5 [label=""]
+    }
+
+    // Feature branches
+    f1 [label="feat", style=filled, fillcolor=lightyellow]
+    f2 [label="feat", style=filled, fillcolor=lightyellow]
+    f3 [label="feat", style=filled, fillcolor=lightyellow]
+
+    // Hotfix
+    h1 [label="fix", style=filled, fillcolor=lightpink]
+
+    // Release
+    r1 [label="rel", style=filled, fillcolor=plum]
+
+    // Flow
+    m1 -> d1 [style=dashed]
+    d1 -> d2
+    d1 -> f1 [style=dashed]
+    f1 -> d2
+    d2 -> d3
+    d2 -> f2 [style=dashed]
+    f2 -> d3
+    d3 -> r1 [style=dashed]
+    r1 -> m2
+    r1 -> d4
+    m2 -> h1 [style=dashed, color=red]
+    h1 -> m3 [color=red]
+    h1 -> d4 [color=red]
+    d4 -> d5
+    d4 -> f3 [style=dashed]
+    f3 -> d5
+}

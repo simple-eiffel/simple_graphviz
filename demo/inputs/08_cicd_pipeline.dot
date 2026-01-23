@@ -1,0 +1,48 @@
+// Demo 08: CI/CD Pipeline Flowchart
+// CLI: simple_graphviz render 08_cicd_pipeline.dot -o 08_cicd_pipeline.svg
+digraph CICD {
+    rankdir=LR
+    node [shape=box, style=rounded, fontname="Arial"]
+
+    subgraph cluster_ci {
+        label="Continuous Integration"
+        style=filled
+        fillcolor=lightcyan
+
+        commit [label="Git\nCommit", shape=box3d]
+        lint [label="Lint &\nFormat"]
+        unit [label="Unit\nTests"]
+        integration [label="Integration\nTests"]
+        build [label="Build\nArtifact"]
+        scan [label="Security\nScan"]
+    }
+
+    subgraph cluster_cd {
+        label="Continuous Deployment"
+        style=filled
+        fillcolor=lightgreen
+
+        stage_deploy [label="Deploy to\nStaging"]
+        stage_test [label="E2E\nTests"]
+        approval [label="Manual\nApproval", shape=diamond]
+        prod_deploy [label="Deploy to\nProduction"]
+        smoke [label="Smoke\nTests"]
+        monitor [label="Monitor &\nAlert"]
+    }
+
+    rollback [label="Rollback", style=filled, fillcolor=lightpink]
+
+    commit -> lint
+    lint -> unit
+    unit -> integration
+    integration -> build
+    build -> scan
+    scan -> stage_deploy
+    stage_deploy -> stage_test
+    stage_test -> approval
+    approval -> prod_deploy [label="Approved"]
+    approval -> rollback [label="Rejected"]
+    prod_deploy -> smoke
+    smoke -> monitor [label="Pass"]
+    smoke -> rollback [label="Fail"]
+}

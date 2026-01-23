@@ -1,0 +1,17 @@
+// Demo 05: Traffic Light State Machine
+// CLI: simple_graphviz render 05_traffic_light_fsm.dot -o 05_traffic_light_fsm.svg
+digraph TrafficLight {
+    rankdir=LR
+    node [shape=circle, fontname="Arial Bold", fontsize=12]
+
+    start [shape=point, width=0.2]
+
+    RED [style=filled, fillcolor=red, fontcolor=white, width=1.2]
+    YELLOW [style=filled, fillcolor=yellow, fontcolor=black, width=1.2]
+    GREEN [style=filled, fillcolor=green, fontcolor=white, width=1.2]
+
+    start -> RED
+    RED -> GREEN [label="45 sec"]
+    GREEN -> YELLOW [label="30 sec"]
+    YELLOW -> RED [label="5 sec"]
+}

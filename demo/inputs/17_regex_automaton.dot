@@ -1,0 +1,31 @@
+// Demo 17: Regex DFA - Pattern: a(b|c)*d
+// CLI: simple_graphviz render 17_regex_automaton.dot -o 17_regex_automaton.svg
+digraph RegexDFA {
+    rankdir=LR
+    node [shape=circle, fontname="Arial Bold", width=0.6]
+
+    start [shape=point, width=0.2]
+    q0 [label="q0"]
+    q1 [label="q1"]
+    q2 [label="q2", shape=doublecircle]
+    qerr [label="∅", style=filled, fillcolor=lightgray]
+
+    start -> q0
+    q0 -> q1 [label="a"]
+    q0 -> qerr [label="b,c,d"]
+    q1 -> q1 [label="b,c"]
+    q1 -> q2 [label="d"]
+    q1 -> qerr [label="a"]
+    q2 -> qerr [label="a,b,c,d"]
+    qerr -> qerr [label="a,b,c,d"]
+
+    // Legend
+    subgraph cluster_legend {
+        label="Legend"
+        style=filled
+        fillcolor=white
+        node [shape=plaintext]
+        leg1 [label="Pattern: a(b|c)*d"]
+        leg2 [label="Accepts: ad, abd, acd, abbd, abcd, ..."]
+    }
+}

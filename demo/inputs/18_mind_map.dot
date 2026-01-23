@@ -1,0 +1,77 @@
+// Demo 18: Mind Map - Software Project Planning
+// CLI: simple_graphviz render 18_mind_map.dot -o 18_mind_map.svg -e twopi
+digraph MindMap {
+    layout=twopi
+    ranksep=2.5
+    node [shape=box, style=rounded, fontname="Arial"]
+
+    center [label="Software\nProject", style=filled, fillcolor=gold, fontsize=14]
+
+    // Main branches
+    planning [label="Planning", style=filled, fillcolor=lightblue]
+    design [label="Design", style=filled, fillcolor=lightgreen]
+    develop [label="Development", style=filled, fillcolor=lightyellow]
+    testing [label="Testing", style=filled, fillcolor=lightpink]
+    deploy [label="Deployment", style=filled, fillcolor=plum]
+
+    // Planning leaves
+    reqs [label="Requirements"]
+    scope [label="Scope"]
+    timeline [label="Timeline"]
+    budget [label="Budget"]
+
+    // Design leaves
+    arch [label="Architecture"]
+    uiux [label="UI/UX"]
+    db_design [label="Database"]
+    api_design [label="API"]
+
+    // Development leaves
+    frontend [label="Frontend"]
+    backend [label="Backend"]
+    mobile [label="Mobile"]
+    devops [label="DevOps"]
+
+    // Testing leaves
+    unit [label="Unit Tests"]
+    integration [label="Integration"]
+    e2e [label="E2E Tests"]
+    perf [label="Performance"]
+
+    // Deploy leaves
+    staging [label="Staging"]
+    prod [label="Production"]
+    monitor [label="Monitoring"]
+    docs [label="Documentation"]
+
+    center -> planning
+    center -> design
+    center -> develop
+    center -> testing
+    center -> deploy
+
+    planning -> reqs
+    planning -> scope
+    planning -> timeline
+    planning -> budget
+
+    design -> arch
+    design -> uiux
+    design -> db_design
+    design -> api_design
+
+    develop -> frontend
+    develop -> backend
+    develop -> mobile
+    develop -> devops
+
+    testing -> unit
+    testing -> integration
+    testing -> e2e
+    testing -> perf
+
+    deploy -> staging
+    deploy -> prod
+    deploy -> monitor
+    deploy -> docs
+}

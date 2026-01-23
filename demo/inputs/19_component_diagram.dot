@@ -1,0 +1,81 @@
+// Demo 19: Software Component Diagram
+// CLI: simple_graphviz render 19_component_diagram.dot -o 19_component_diagram.svg
+digraph ComponentDiagram {
+    rankdir=TB
+    compound=true
+    node [shape=component, fontname="Arial", fontsize=10]
+
+    subgraph cluster_presentation {
+        label="Presentation Layer"
+        style=filled
+        fillcolor=lightcyan
+
+        WebUI [label="Web UI\n(React)"]
+        AdminUI [label="Admin Panel\n(Angular)"]
+        MobileUI [label="Mobile App\n(React Native)"]
+    }
+
+    subgraph cluster_api {
+        label="API Layer"
+        style=filled
+        fillcolor=lightyellow
+
+        RestAPI [label="REST API\n(Express)"]
+        GraphQL [label="GraphQL\n(Apollo)"]
+        WebSocket [label="WebSocket\n(Socket.io)"]
+    }
+
+    subgraph cluster_business {
+        label="Business Logic"
+        style=filled
+        fillcolor=lightgreen
+
+        AuthSvc [label="Auth\nService"]
+        UserSvc [label="User\nService"]
+        OrderSvc [label="Order\nService"]
+        PaymentSvc [label="Payment\nService"]
+        NotifySvc [label="Notification\nService"]
+    }
+
+    subgraph cluster_data {
+        label="Data Access"
+        style=filled
+        fillcolor=lightpink
+
+        UserRepo [label="User\nRepository"]
+        OrderRepo [label="Order\nRepository"]
+        CacheRepo [label="Cache\nRepository"]
+    }
+
+    subgraph cluster_external {
+        label="External Services"
+        style=filled
+        fillcolor=lightgray
+
+        Stripe [label="Stripe\nAPI"]
+        Twilio [label="Twilio\nSMS"]
+        AWS [label="AWS\nS3"]
+    }
+
+    // Connections
+    WebUI -> RestAPI
+    WebUI -> WebSocket
+    AdminUI -> RestAPI
+    MobileUI -> GraphQL
+
+    RestAPI -> AuthSvc
+    RestAPI -> UserSvc
+    RestAPI -> OrderSvc
+    GraphQL -> UserSvc
+    GraphQL -> OrderSvc
+    WebSocket -> NotifySvc
+
+    AuthSvc -> UserRepo
+    UserSvc -> UserRepo
+    UserSvc -> CacheRepo
+    OrderSvc -> OrderRepo
+    OrderSvc -> PaymentSvc
+    PaymentSvc -> Stripe
+    NotifySvc -> Twilio
+    UserRepo -> AWS
+}

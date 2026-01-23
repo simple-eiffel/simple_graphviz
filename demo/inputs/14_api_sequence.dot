@@ -1,0 +1,25 @@
+// Demo 14: REST API Request Flow
+// CLI: simple_graphviz render 14_api_sequence.dot -o 14_api_sequence.svg
+digraph APIFlow {
+    rankdir=LR
+    node [shape=box, fontname="Arial", fontsize=10]
+
+    Client [shape=box3d, style=filled, fillcolor=lightblue]
+    Gateway [shape=box, style=filled, fillcolor=lightyellow]
+    Auth [shape=box, style=filled, fillcolor=lightgreen]
+    Service [shape=box, style=filled, fillcolor=lightcyan]
+    Cache [shape=cylinder, style=filled, fillcolor=pink]
+    Database [shape=cylinder, style=filled, fillcolor=lightgray]
+
+    Client -> Gateway [label="1. POST /api/orders\n{Authorization: Bearer ...}"]
+    Gateway -> Auth [label="2. Validate Token"]
+    Auth -> Gateway [label="3. Token Valid\n{user_id: 123}"]
+    Gateway -> Service [label="4. Forward Request\n+ user context"]
+    Service -> Cache [label="5. Check Cache"]
+    Cache -> Service [label="6. Cache Miss", style=dashed]
+    Service -> Database [label="7. Query Data"]
+    Database -> Service [label="8. Result Set"]
+    Service -> Cache [label="9. Update Cache"]
+    Service -> Gateway [label="10. Response\n{order_id: 456}"]
+    Gateway -> Client [label="11. 201 Created\n{order_id: 456}"]
+}

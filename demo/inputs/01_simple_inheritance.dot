@@ -1,0 +1,13 @@
+// Demo 01: Simple Class Inheritance
+// CLI: simple_graphviz render 01_simple_inheritance.dot -o 01_simple_inheritance.svg
+digraph SimpleInheritance {
+    rankdir=BT
+    node [shape=box, fontname="Arial"]
+
+    ANIMAL [label="ANIMAL\n─────────\n+ name: STRING\n+ age: INTEGER\n─────────\n+ speak()*\n+ move()*", style=filled, fillcolor=lightyellow]
+    DOG [label="DOG\n─────────\n+ breed: STRING\n─────────\n+ speak()\n+ fetch()"]
+    CAT [label="CAT\n─────────\n+ indoor: BOOLEAN\n─────────\n+ speak()\n+ purr()"]
+
+    DOG -> ANIMAL [arrowhead=empty]
+    CAT -> ANIMAL [arrowhead=empty]
+}

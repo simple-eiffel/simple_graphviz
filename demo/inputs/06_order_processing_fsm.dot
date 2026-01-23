@@ -1,0 +1,30 @@
+// Demo 06: E-Commerce Order Processing State Machine
+// CLI: simple_graphviz render 06_order_processing_fsm.dot -o 06_order_processing_fsm.svg
+digraph OrderProcessing {
+    rankdir=TB
+    node [shape=box, style=rounded, fontname="Arial"]
+
+    start [shape=point, width=0.2]
+    end [shape=doublecircle, label="", width=0.3]
+
+    PENDING [style=filled, fillcolor=lightyellow]
+    CONFIRMED [style=filled, fillcolor=lightblue]
+    PROCESSING [style=filled, fillcolor=lightcyan]
+    SHIPPED [style=filled, fillcolor=lightgreen]
+    DELIVERED [style=filled, fillcolor=green, fontcolor=white]
+    CANCELLED [style=filled, fillcolor=lightpink]
+    REFUNDED [style=filled, fillcolor=lightgray]
+
+    start -> PENDING [label="order placed"]
+    PENDING -> CONFIRMED [label="payment received"]
+    PENDING -> CANCELLED [label="timeout/cancel"]
+    CONFIRMED -> PROCESSING [label="pick & pack"]
+    CONFIRMED -> CANCELLED [label="cancel request"]
+    PROCESSING -> SHIPPED [label="courier pickup"]
+    SHIPPED -> DELIVERED [label="delivery confirmed"]
+    SHIPPED -> PROCESSING [label="delivery failed"]
+    DELIVERED -> end
+    DELIVERED -> REFUNDED [label="return request"]
+    CANCELLED -> end
+    REFUNDED -> end
+}

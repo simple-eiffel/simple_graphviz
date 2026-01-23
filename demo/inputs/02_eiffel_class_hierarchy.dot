@@ -1,0 +1,35 @@
+// Demo 02: Eiffel Class Hierarchy (ANY tree)
+// CLI: simple_graphviz render 02_eiffel_class_hierarchy.dot -o 02_eiffel_class_hierarchy.svg
+digraph EiffelHierarchy {
+    rankdir=BT
+    node [shape=box, fontname="Courier", fontsize=10]
+
+    ANY [style=filled, fillcolor=lightblue]
+    COMPARABLE [style=filled, fillcolor=lightyellow]
+    NUMERIC [style=filled, fillcolor=lightyellow]
+    HASHABLE [style=filled, fillcolor=lightyellow]
+
+    STRING
+    INTEGER
+    REAL
+    BOOLEAN
+    CHARACTER
+
+    COMPARABLE -> ANY [arrowhead=empty]
+    NUMERIC -> ANY [arrowhead=empty]
+    HASHABLE -> ANY [arrowhead=empty]
+
+    STRING -> COMPARABLE [arrowhead=empty]
+    STRING -> HASHABLE [arrowhead=empty]
+
+    INTEGER -> COMPARABLE [arrowhead=empty]
+    INTEGER -> NUMERIC [arrowhead=empty]
+    INTEGER -> HASHABLE [arrowhead=empty]
+
+    REAL -> COMPARABLE [arrowhead=empty]
+    REAL -> NUMERIC [arrowhead=empty]
+
+    BOOLEAN -> HASHABLE [arrowhead=empty]
+    CHARACTER -> COMPARABLE [arrowhead=empty]
+    CHARACTER -> HASHABLE [arrowhead=empty]
+}

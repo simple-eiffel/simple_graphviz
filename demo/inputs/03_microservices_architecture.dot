@@ -1,0 +1,56 @@
+// Demo 03: Microservices Architecture
+// CLI: simple_graphviz render 03_microservices_architecture.dot -o 03_microservices_architecture.svg -e dot
+digraph Microservices {
+    rankdir=LR
+    node [shape=box, style=rounded]
+
+    subgraph cluster_frontend {
+        label="Frontend"
+        style=filled
+        fillcolor=lightcyan
+        WebApp [label="Web App\n(React)"]
+        MobileApp [label="Mobile App\n(Flutter)"]
+    }
+
+    subgraph cluster_gateway {
+        label="API Gateway"
+        style=filled
+        fillcolor=lightyellow
+        Gateway [label="Kong\nGateway"]
+        Auth [label="Auth\nService"]
+    }
+
+    subgraph cluster_services {
+        label="Microservices"
+        style=filled
+        fillcolor=lightgreen
+        UserSvc [label="User\nService"]
+        OrderSvc [label="Order\nService"]
+        PaymentSvc [label="Payment\nService"]
+        NotifySvc [label="Notification\nService"]
+    }
+
+    subgraph cluster_data {
+        label="Data Layer"
+        style=filled
+        fillcolor=lightpink
+        UserDB [label="Users\nPostgres", shape=cylinder]
+        OrderDB [label="Orders\nMongoDB", shape=cylinder]
+        Cache [label="Redis\nCache", shape=cylinder]
+        Queue [label="RabbitMQ", shape=box3d]
+    }
+
+    WebApp -> Gateway
+    MobileApp -> Gateway
+    Gateway -> Auth
+    Gateway -> UserSvc
+    Gateway -> OrderSvc
+    Gateway -> PaymentSvc
+
+    UserSvc -> UserDB
+    UserSvc -> Cache
+    OrderSvc -> OrderDB
+    OrderSvc -> Queue
+    PaymentSvc -> Queue
+    Queue -> NotifySvc
+}

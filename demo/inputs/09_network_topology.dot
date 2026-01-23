@@ -1,0 +1,50 @@
+// Demo 09: Network Topology Diagram
+// CLI: simple_graphviz render 09_network_topology.dot -o 09_network_topology.svg -e neato
+graph NetworkTopology {
+    layout=neato
+    overlap=false
+    splines=true
+    node [fontname="Arial", fontsize=10]
+
+    // Internet
+    internet [label="Internet\nCloud", shape=cloud, style=filled, fillcolor=lightblue]
+
+    // Firewall
+    firewall [label="Firewall", shape=box, style=filled, fillcolor=red, fontcolor=white]
+
+    // Core Router
+    router [label="Core\nRouter", shape=box3d, style=filled, fillcolor=lightyellow]
+
+    // Switches
+    sw1 [label="Switch 1\n(Floor 1)", shape=box, style=filled, fillcolor=lightgreen]
+    sw2 [label="Switch 2\n(Floor 2)", shape=box, style=filled, fillcolor=lightgreen]
+    sw3 [label="Switch 3\n(Server Room)", shape=box, style=filled, fillcolor=lightgreen]
+
+    // Servers
+    web1 [label="Web\nServer 1", shape=box3d]
+    web2 [label="Web\nServer 2", shape=box3d]
+    db [label="Database\nServer", shape=cylinder]
+    file [label="File\nServer", shape=folder]
+
+    // Workstations
+    ws1 [label="WS 1", shape=box]
+    ws2 [label="WS 2", shape=box]
+    ws3 [label="WS 3", shape=box]
+    ws4 [label="WS 4", shape=box]
+
+    internet -- firewall
+    firewall -- router
+    router -- sw1
+    router -- sw2
+    router -- sw3
+
+    sw1 -- ws1
+    sw1 -- ws2
+    sw2 -- ws3
+    sw2 -- ws4
+
+    sw3 -- web1
+    sw3 -- web2
+    sw3 -- db
+    sw3 -- file
+}

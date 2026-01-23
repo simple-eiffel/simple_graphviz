@@ -1,0 +1,25 @@
+// Demo 04: Database Entity-Relationship Diagram
+// CLI: simple_graphviz render 04_database_schema.dot -o 04_database_schema.svg
+digraph DatabaseSchema {
+    rankdir=LR
+    node [shape=record, fontname="Arial", fontsize=10]
+
+    users [label="{users|id : INT PK\lname : VARCHAR(100)\lemail : VARCHAR(255)\lcreated_at : TIMESTAMP\l}"]
+
+    orders [label="{orders|id : INT PK\luser_id : INT FK\lstatus : VARCHAR(20)\ltotal : DECIMAL(10,2)\lcreated_at : TIMESTAMP\l}"]
+
+    order_items [label="{order_items|id : INT PK\lorder_id : INT FK\lproduct_id : INT FK\lquantity : INT\lprice : DECIMAL(10,2)\l}"]
+
+    products [label="{products|id : INT PK\lname : VARCHAR(200)\ldescription : TEXT\lprice : DECIMAL(10,2)\lstock : INT\l}"]
+
+    categories [label="{categories|id : INT PK\lname : VARCHAR(100)\lparent_id : INT FK\l}"]
+
+    product_categories [label="{product_categories|product_id : INT FK\lcategory_id : INT FK\l}"]
+
+    orders -> users [label="user_id", arrowhead=crow]
+    order_items -> orders [label="order_id", arrowhead=crow]
+    order_items -> products [label="product_id", arrowhead=crow]
+    product_categories -> products [label="product_id", arrowhead=crow]
+    product_categories -> categories [label="category_id", arrowhead=crow]
+    categories -> categories [label="parent_id", style=dashed]
+}

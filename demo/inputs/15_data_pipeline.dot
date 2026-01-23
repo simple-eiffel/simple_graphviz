@@ -1,0 +1,61 @@
+// Demo 15: Data Processing Pipeline
+// CLI: simple_graphviz render 15_data_pipeline.dot -o 15_data_pipeline.svg
+digraph DataPipeline {
+    rankdir=LR
+    node [fontname="Arial", fontsize=10]
+
+    subgraph cluster_ingest {
+        label="Data Ingestion"
+        style=filled
+        fillcolor=lightcyan
+
+        api [label="REST API", shape=box]
+        kafka [label="Kafka\nTopics", shape=box3d]
+        files [label="S3 Files", shape=folder]
+    }
+
+    subgraph cluster_process {
+        label="Processing"
+        style=filled
+        fillcolor=lightyellow
+
+        spark [label="Spark\nCleaning", shape=box]
+        transform [label="Data\nTransform", shape=box]
+        validate [label="Quality\nChecks", shape=diamond]
+        enrich [label="Enrichment", shape=box]
+    }
+
+    subgraph cluster_store {
+        label="Storage"
+        style=filled
+        fillcolor=lightgreen
+
+        lake [label="Data Lake\n(Parquet)", shape=cylinder]
+        warehouse [label="Data Warehouse\n(Snowflake)", shape=cylinder]
+        cache [label="Redis\nCache", shape=cylinder]
+    }
+
+    subgraph cluster_serve {
+        label="Serving"
+        style=filled
+        fillcolor=lightpink
+
+        bi [label="BI Tools\n(Tableau)", shape=box]
+        ml [label="ML Models", shape=box]
+        api_out [label="API", shape=box]
+    }
+
+    api -> kafka
+    files -> spark
+    kafka -> spark
+    spark -> transform
+    transform -> validate
+    validate -> enrich [label="Pass"]
+    validate -> spark [label="Fail", style=dashed]
+    enrich -> lake
+    enrich -> warehouse
+    lake -> ml
+    warehouse -> bi
+    warehouse -> cache
+    cache -> api_out
+}

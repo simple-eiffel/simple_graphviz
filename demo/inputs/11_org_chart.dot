@@ -1,0 +1,44 @@
+// Demo 11: Organization Chart
+// CLI: simple_graphviz render 11_org_chart.dot -o 11_org_chart.svg
+digraph OrgChart {
+    rankdir=TB
+    node [shape=box, style=filled, fontname="Arial"]
+
+    CEO [label="Jane Smith\nCEO", fillcolor=gold]
+
+    CTO [label="Bob Johnson\nCTO", fillcolor=lightblue]
+    CFO [label="Alice Brown\nCFO", fillcolor=lightgreen]
+    COO [label="Charlie Davis\nCOO", fillcolor=lightyellow]
+
+    VP_Eng [label="Diana Lee\nVP Engineering", fillcolor=lightcyan]
+    VP_Product [label="Eve Wilson\nVP Product", fillcolor=lightcyan]
+    VP_Finance [label="Frank Miller\nVP Finance", fillcolor=palegreen]
+    VP_Ops [label="Grace Taylor\nVP Operations", fillcolor=moccasin]
+
+    Dev1 [label="Dev Team 1", fillcolor=white]
+    Dev2 [label="Dev Team 2", fillcolor=white]
+    QA [label="QA Team", fillcolor=white]
+    PM [label="Product Mgmt", fillcolor=white]
+    Accounting [label="Accounting", fillcolor=white]
+    HR [label="HR", fillcolor=white]
+    Support [label="Support", fillcolor=white]
+
+    CEO -> CTO
+    CEO -> CFO
+    CEO -> COO
+
+    CTO -> VP_Eng
+    CTO -> VP_Product
+
+    CFO -> VP_Finance
+
+    COO -> VP_Ops
+
+    VP_Eng -> Dev1
+    VP_Eng -> Dev2
+    VP_Eng -> QA
+    VP_Product -> PM
+    VP_Finance -> Accounting
+    VP_Ops -> HR
+    VP_Ops -> Support
+}

@@ -1,0 +1,42 @@
+// Demo 10: Simple Eiffel Library Dependencies
+// CLI: simple_graphviz render 10_library_dependencies.dot -o 10_library_dependencies.svg
+digraph LibraryDeps {
+    rankdir=BT
+    node [shape=box, style=rounded, fontname="Arial", fontsize=10]
+
+    // ISE libraries (external)
+    base [label="ISE base", style=filled, fillcolor=lightgray]
+    time [label="ISE time", style=filled, fillcolor=lightgray]
+    testing [label="ISE testing", style=filled, fillcolor=lightgray]
+
+    // simple_* foundation
+    simple_mml [label="simple_mml\n(MML contracts)", style=filled, fillcolor=lightblue]
+    simple_logger [label="simple_logger\n(logging)", style=filled, fillcolor=lightblue]
+
+    // simple_* mid-level
+    simple_json [label="simple_json", style=filled, fillcolor=lightgreen]
+    simple_http [label="simple_http", style=filled, fillcolor=lightgreen]
+    simple_process [label="simple_process", style=filled, fillcolor=lightgreen]
+    simple_xml [label="simple_xml", style=filled, fillcolor=lightgreen]
+
+    // simple_* high-level
+    simple_graphviz [label="simple_graphviz", style=filled, fillcolor=lightyellow]
+    simple_web_server [label="simple_web_server", style=filled, fillcolor=lightyellow]
+
+    // Dependencies
+    simple_mml -> base
+    simple_logger -> base
+    simple_json -> base
+    simple_json -> simple_mml
+    simple_http -> base
+    simple_http -> simple_mml
+    simple_process -> base
+    simple_xml -> base
+    simple_xml -> simple_mml
+    simple_graphviz -> base
+    simple_graphviz -> simple_mml
+    simple_graphviz -> simple_logger
+    simple_web_server -> base
+    simple_web_server -> simple_http
+    simple_web_server -> simple_json
+}

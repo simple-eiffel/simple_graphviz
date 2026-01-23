@@ -1,0 +1,44 @@
+// Demo 07: User Login Flowchart
+// CLI: simple_graphviz render 07_login_flowchart.dot -o 07_login_flowchart.svg
+digraph LoginFlow {
+    rankdir=TB
+    node [fontname="Arial"]
+
+    start [shape=ellipse, label="Start", style=filled, fillcolor=lightgreen]
+    finish [shape=ellipse, label="End", style=filled, fillcolor=lightpink]
+
+    input [shape=parallelogram, label="Enter\nCredentials"]
+    validate [shape=diamond, label="Valid\nFormat?"]
+    check_db [shape=box, label="Query\nDatabase"]
+    user_exists [shape=diamond, label="User\nExists?"]
+    check_pwd [shape=diamond, label="Password\nCorrect?"]
+    check_2fa [shape=diamond, label="2FA\nEnabled?"]
+    send_2fa [shape=box, label="Send 2FA\nCode"]
+    verify_2fa [shape=diamond, label="2FA\nValid?"]
+    create_session [shape=box, label="Create\nSession"]
+    show_error [shape=box, label="Show Error\nMessage"]
+    increment_fail [shape=box, label="Increment\nFail Count"]
+    check_lockout [shape=diamond, label="Locked\nOut?"]
+    lockout [shape=box, label="Lock\nAccount"]
+
+    start -> input
+    input -> validate
+    validate -> check_db [label="Yes"]
+    validate -> show_error [label="No"]
+    check_db -> user_exists
+    user_exists -> check_pwd [label="Yes"]
+    user_exists -> show_error [label="No"]
+    check_pwd -> check_2fa [label="Yes"]
+    check_pwd -> increment_fail [label="No"]
+    increment_fail -> check_lockout
+    check_lockout -> lockout [label="Yes"]
+    check_lockout -> show_error [label="No"]
+    lockout -> finish
+    check_2fa -> send_2fa [label="Yes"]
+    check_2fa -> create_session [label="No"]
+    send_2fa -> verify_2fa
+    verify_2fa -> create_session [label="Yes"]
+    verify_2fa -> show_error [label="No"]
+    create_session -> finish
+    show_error -> input
+}
