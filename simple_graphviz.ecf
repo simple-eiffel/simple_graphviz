@@ -23,6 +23,8 @@
 		<!-- simple_* preferred -->
 		<library name="simple_mml" location="$SIMPLE_EIFFEL/simple_mml/simple_mml.ecf"/>
 		<library name="simple_logger" location="$SIMPLE_EIFFEL/simple_logger/simple_logger.ecf"/>
+		<library name="simple_eiffel_parser" location="$SIMPLE_EIFFEL/simple_eiffel_parser/simple_eiffel_parser.ecf"/>
+		<library name="simple_xml" location="$SIMPLE_EIFFEL/simple_xml/simple_xml.ecf"/>
 		<!-- GraphViz C library integration -->
 		<external_include location="$SIMPLE_EIFFEL\simple_graphviz\Clib"/>
 		<external_library location="$SIMPLE_EIFFEL\simple_graphviz\Clib\gvc.lib"/>
@@ -37,6 +39,38 @@
 	<target name="simple_graphviz_cli" extends="simple_graphviz">
 		<root class="GRAPHVIZ_CLI" feature="make"/>
 		<setting name="console_application" value="true"/>
+	</target>
+	<target name="eiffel_graph_gen">
+		<root class="GRAPH_GEN_CLI" feature="make"/>
+		<file_rule>
+			<exclude>/EIFGENs$</exclude>
+			<exclude>/\.git$</exclude>
+			<exclude>/\.svn$</exclude>
+			<exclude>/test$</exclude>
+		</file_rule>
+		<option warning="warning" syntax="standard" manifest_array_type="mismatch_warning">
+			<assertions precondition="true" postcondition="true" check="true" invariant="true" loop="true" supplier_precondition="true"/>
+		</option>
+		<setting name="console_application" value="true"/>
+		<setting name="dead_code_removal" value="feature"/>
+		<capability>
+			<concurrency support="scoop"/>
+			<void_safety support="all"/>
+		</capability>
+		<library name="base" location="$ISE_LIBRARY/library/base/base.ecf"/>
+		<library name="simple_mml" location="$SIMPLE_EIFFEL/simple_mml/simple_mml.ecf"/>
+		<library name="simple_logger" location="$SIMPLE_EIFFEL/simple_logger/simple_logger.ecf"/>
+		<library name="simple_eiffel_parser" location="$SIMPLE_EIFFEL/simple_eiffel_parser/simple_eiffel_parser.ecf"/>
+		<library name="simple_xml" location="$SIMPLE_EIFFEL/simple_xml/simple_xml.ecf"/>
+		<external_include location="$SIMPLE_EIFFEL\simple_graphviz\Clib"/>
+		<external_library location="$SIMPLE_EIFFEL\simple_graphviz\Clib\gvc.lib"/>
+		<external_library location="$SIMPLE_EIFFEL\simple_graphviz\Clib\cgraph.lib"/>
+		<external_library location="$SIMPLE_EIFFEL\simple_graphviz\Clib\cdt.lib"/>
+		<external_library location="$SIMPLE_EIFFEL\simple_graphviz\Clib\gvplugin_core.lib"/>
+		<external_library location="$SIMPLE_EIFFEL\simple_graphviz\Clib\gvplugin_dot_layout.lib"/>
+		<external_library location="$SIMPLE_EIFFEL\simple_graphviz\Clib\gvplugin_neato_layout.lib"/>
+		<external_library location="$SIMPLE_EIFFEL\simple_graphviz\Clib\pathplan.lib"/>
+		<cluster name="src" location=".\src\" recursive="true"/>
 	</target>
 	<target name="simple_graphviz_tests" extends="simple_graphviz">
 		<root class="TEST_APP" feature="make"/>

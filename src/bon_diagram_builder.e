@@ -146,10 +146,10 @@ feature -- Manual Building
 			if include_features then
 				create l_label.make (a_name.count + 50)
 				l_label.append_string (a_name)
-				l_label.append_string ("\n")
+				l_label.append_character ('%N')
 				across a_features as ic loop
 					l_label.append_string (ic)
-					l_label.append_string ("\n")
+					l_label.append_character ('%N')
 				end
 				l_node.set_label (l_label).do_nothing
 			else

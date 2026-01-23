@@ -51,6 +51,9 @@ feature -- Access
 	engine: STRING
 			-- Layout engine (dot, neato, fdp, circo, twopi, osage, sfdp).
 
+	post_processor: detachable PHYSICS_POST_PROCESSOR
+			-- Optional physics post-processor for boundary-constrained layouts.
+
 feature -- Configuration
 
 	set_timeout (a_ms: INTEGER): like Current
@@ -75,6 +78,44 @@ feature -- Configuration
 			Result := Current
 		ensure
 			engine_set: engine.same_string (a_engine)
+			result_is_current: Result = Current
+		end
+
+	set_post_processor (a_processor: detachable PHYSICS_POST_PROCESSOR): like Current
+			-- Set optional physics post-processor for boundary-constrained layouts.
+			-- Pass Void to disable post-processing.
+		do
+			post_processor := a_processor
+			Result := Current
+		ensure
+			processor_set: post_processor = a_processor
+			result_is_current: Result = Current
+		end
+
+	enable_boundary_constraints (a_width, a_height: REAL_64): like Current
+			-- Enable physics post-processing with given page size in points.
+		require
+			positive_width: a_width > 0
+			positive_height: a_height > 0
+		local
+			l_processor: PHYSICS_POST_PROCESSOR
+		do
+			create l_processor.make
+			l_processor.set_target_size (a_width, a_height).do_nothing
+			post_processor := l_processor
+			Result := Current
+		ensure
+			processor_enabled: post_processor /= Void
+			result_is_current: Result = Current
+		end
+
+	disable_boundary_constraints: like Current
+			-- Disable physics post-processing.
+		do
+			post_processor := Void
+			Result := Current
+		ensure
+			processor_disabled: post_processor = Void
 			result_is_current: Result = Current
 		end
 
@@ -119,8 +160,9 @@ feature -- Status Report
 			-- Is GraphViz version >= 2.40?
 		local
 			l_version: detachable STRING
-			l_dot_pos: INTEGER
+			l_dot_pos, l_second_dot: INTEGER
 			l_major, l_minor: INTEGER
+			l_minor_str: STRING
 		do
 			l_version := graphviz_version
 			if attached l_version as v then
@@ -129,7 +171,16 @@ feature -- Status Report
 					l_major := v.substring (1, l_dot_pos - 1).to_integer
 					l_minor := 0
 					if l_dot_pos < v.count then
-						l_minor := v.substring (l_dot_pos + 1, (l_dot_pos + 2).min (v.count)).to_integer
+						-- Find second dot or end of string for minor version
+						l_second_dot := v.index_of ('.', l_dot_pos + 1)
+						if l_second_dot > 0 then
+							l_minor_str := v.substring (l_dot_pos + 1, l_second_dot - 1)
+						else
+							l_minor_str := v.substring (l_dot_pos + 1, v.count)
+						end
+						if l_minor_str.is_integer then
+							l_minor := l_minor_str.to_integer
+						end
 					end
 					Result := is_version_sufficient_check (l_major, l_minor, 2, 40)
 				end
@@ -212,6 +263,11 @@ feature -- Rendering
 						create l_error.make ({GRAPHVIZ_ERROR}.Invalid_dot, "Layout failed for engine: " + engine)
 						create Result.make_failure (l_error)
 					else
+						-- Apply physics post-processing if enabled
+						if attached post_processor as l_pp then
+							l_pp.process_graph (gvc_context, l_graph).do_nothing
+						end
+
 						-- Render to memory
 						create l_format_c.make (a_format)
 						l_render_result := c_gv_render_data (gvc_context, l_graph, l_format_c.item, $l_result_ptr, $l_result_len)
@@ -276,6 +332,11 @@ feature -- Rendering
 						create l_error.make ({GRAPHVIZ_ERROR}.Invalid_dot, "Layout failed for engine: " + engine)
 						create Result.make_failure (l_error)
 					else
+						-- Apply physics post-processing if enabled
+						if attached post_processor as l_pp then
+							l_pp.process_graph (gvc_context, l_graph).do_nothing
+						end
+
 						-- Render to file
 						create l_format_c.make (a_format)
 						create l_path_c.make (a_path)
