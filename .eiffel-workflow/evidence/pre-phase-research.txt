@@ -1,0 +1,34 @@
+# Pre-Phase Research Evidence
+# Project: simple_graphviz
+# Date: 2026-01-22
+
+Research completed: yes
+Steps completed: 7/7
+Recommendation: BUILD
+Confidence: HIGH
+
+References cited: 25+
+Alternatives researched: 5 (GraphViz, EiffelStudio, EBON, Python graphviz, ts-graphviz)
+Risks identified: 11
+
+Key Findings:
+- No existing Eiffel library for DOT/GraphViz integration
+- Subprocess pattern proven in simple_pdf
+- simple_eiffel_parser provides structural info
+- BON notation well-documented
+- GraphViz handles layout complexity
+- AI integration deferred (no clear value for MVP)
+
+Dependencies Identified:
+- simple_eiffel_parser (Eiffel parsing)
+- simple_process (subprocess)
+- simple_file (I/O)
+- simple_pdf (PDF export)
+- GraphViz (external, must be installed)
+
+Architecture:
+- Layered: DOT AST -> Renderer -> BON Builder -> Facade
+- ~10 classes estimated
+- Fluent builder pattern
+
+# Status: COMPLETE

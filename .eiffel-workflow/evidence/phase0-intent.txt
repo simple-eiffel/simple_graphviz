@@ -1,0 +1,24 @@
+# Phase 0 Intent Evidence
+# Project: d:\prod\simple_graphviz
+# Date: 2026-01-22
+
+Intent document: .eiffel-workflow/intent-v2.md
+AI review conducted: yes
+AI used for review: Ollama (qwen2.5-coder:14b) + Claude (Opus 4.5)
+Questions raised: 16
+Questions resolved: 16
+User approved: yes
+
+# Changes from v1 to v2:
+- Expanded from BON-only to general-purpose GraphViz library
+- Added 6 diagram types for v1.0 (BON, Flowchart, State Machine, Dependency, Inheritance, Generic)
+- Added layout engine selection (dot, neato, fdp, circo, twopi, osage, sfdp)
+- Added GRAPHVIZ_ERROR class with error code enum
+- Clarified arbitrary attribute support via set_attribute
+- Specified GraphViz 2.40+ requirement
+- Clarified BON notation follows OOSC2 spec
+- Added builder validation at build time (any order allowed)
+- Removed simple_pdf dependency (GraphViz native PDF sufficient)
+- Increased class count from 14 to 15
+
+# Status: APPROVED

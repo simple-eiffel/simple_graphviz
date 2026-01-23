@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<system xmlns="http://www.eiffel.com/developers/xml/configuration-1-22-0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.eiffel.com/developers/xml/configuration-1-22-0 http://www.eiffel.com/developers/xml/configuration-1-22-0.xsd" name="simple_graphviz" uuid="A1B2C3D4-E5F6-7890-ABCD-EF1234567890" library_target="simple_graphviz">
+	<description>General-purpose GraphViz library for Eiffel - generates diagrams using DOT language</description>
+	<target name="simple_graphviz">
+		<root all_classes="true"/>
+		<file_rule>
+			<exclude>/EIFGENs$</exclude>
+			<exclude>/\.git$</exclude>
+			<exclude>/\.svn$</exclude>
+			<exclude>/test$</exclude>
+		</file_rule>
+		<option warning="warning" syntax="standard" manifest_array_type="mismatch_warning">
+			<assertions precondition="true" postcondition="true" check="true" invariant="true" loop="true" supplier_precondition="true"/>
+		</option>
+		<setting name="console_application" value="true"/>
+		<setting name="dead_code_removal" value="feature"/>
+		<capability>
+			<concurrency support="scoop"/>
+			<void_safety support="all"/>
+		</capability>
+		<!-- ISE allowed (no simple_* equivalent) -->
+		<library name="base" location="$ISE_LIBRARY/library/base/base.ecf"/>
+		<!-- simple_* preferred -->
+		<library name="simple_mml" location="$SIMPLE_EIFFEL/simple_mml/simple_mml.ecf"/>
+		<library name="simple_logger" location="$SIMPLE_EIFFEL/simple_logger/simple_logger.ecf"/>
+		<!-- GraphViz C library integration -->
+		<external_include location="$SIMPLE_EIFFEL\simple_graphviz\Clib"/>
+		<external_library location="$SIMPLE_EIFFEL\simple_graphviz\Clib\gvc.lib"/>
+		<external_library location="$SIMPLE_EIFFEL\simple_graphviz\Clib\cgraph.lib"/>
+		<external_library location="$SIMPLE_EIFFEL\simple_graphviz\Clib\cdt.lib"/>
+		<external_library location="$SIMPLE_EIFFEL\simple_graphviz\Clib\gvplugin_core.lib"/>
+		<external_library location="$SIMPLE_EIFFEL\simple_graphviz\Clib\gvplugin_dot_layout.lib"/>
+		<external_library location="$SIMPLE_EIFFEL\simple_graphviz\Clib\gvplugin_neato_layout.lib"/>
+		<external_library location="$SIMPLE_EIFFEL\simple_graphviz\Clib\pathplan.lib"/>
+		<cluster name="src" location=".\src\" recursive="true"/>
+	</target>
+	<target name="simple_graphviz_cli" extends="simple_graphviz">
+		<root class="GRAPHVIZ_CLI" feature="make"/>
+		<setting name="console_application" value="true"/>
+	</target>
+	<target name="simple_graphviz_tests" extends="simple_graphviz">
+		<root class="TEST_APP" feature="make"/>
+		<file_rule>
+			<exclude>/EIFGENs$</exclude>
+			<exclude>/\.git$</exclude>
+			<exclude>/\.svn$</exclude>
+		</file_rule>
+		<option warning="warning">
+			<assertions precondition="true" postcondition="true" check="true" invariant="true" loop="true" supplier_precondition="true"/>
+		</option>
+		<setting name="console_application" value="true"/>
+		<!-- ISE testing library -->
+		<library name="testing" location="$ISE_LIBRARY/library/testing/testing.ecf"/>
+		<cluster name="test" location=".\test\" recursive="true"/>
+	</target>
+</system>

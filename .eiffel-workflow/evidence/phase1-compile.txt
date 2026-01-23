@@ -1,0 +1,56 @@
+# Phase 1 Compilation Evidence
+# Project: d:\prod\simple_graphviz
+# Date: 2026-01-22
+# Command: /d/prod/ec.sh -batch -config simple_graphviz.ecf -target simple_graphviz_tests -c_compile
+
+Eiffel Compilation Manager
+Version 25.02.9.8732 - win64
+
+Degree 6: Examining System
+Degree 5: Parsing Classes
+Degree 4: Analyzing Inheritance
+Degree 3: Checking Types
+Degree 2: Generating Byte Code
+Freezing System Changes
+Degree -1: Generating Code
+System Recompiled.
+Preparing C compilation using Microsoft Visual Studio 2022 VC++ (17.0)...
+[... C compilation output ...]
+C compilation completed
+
+# ECF Dependency Audit:
+# - ISE allowed: base, time, testing
+# - simple_* used: simple_mml
+# - Violations: None
+# - Gaps identified: None
+
+# Classes Created (15):
+# Core:
+#   - DOT_ATTRIBUTES (key-value pairs with DOT escaping)
+#   - DOT_NODE (node with fluent setters)
+#   - DOT_EDGE (edge between nodes)
+#   - DOT_SUBGRAPH (cluster grouping)
+#   - DOT_GRAPH (complete graph with MML models)
+# Rendering:
+#   - GRAPHVIZ_ERROR (error codes)
+#   - GRAPHVIZ_RESULT (result with success/error)
+#   - GRAPHVIZ_RENDERER (subprocess execution stub)
+# Style:
+#   - GRAPHVIZ_STYLE (visual presets: BON, UML, minimal)
+# Builders:
+#   - BON_DIAGRAM_BUILDER (Eiffel BON diagrams)
+#   - FLOWCHART_BUILDER (process flowcharts)
+#   - STATE_MACHINE_BUILDER (state machines)
+#   - DEPENDENCY_BUILDER (library dependencies)
+#   - INHERITANCE_BUILDER (class inheritance trees)
+# Facade:
+#   - SIMPLE_GRAPHVIZ (main entry point)
+
+# Test Classes Created (4):
+#   - TEST_DOT_GRAPH (14 tests for DOT structure)
+#   - TEST_BUILDERS (12 tests for builders)
+#   - TEST_SIMPLE_GRAPHVIZ (9 tests for facade)
+#   - TEST_SCOOP_CONSUMER (SCOOP compatibility)
+#   - TEST_APP (test runner)
+
+# Status: PASS

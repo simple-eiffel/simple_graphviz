@@ -1,0 +1,26 @@
+# Eiffel build artifacts
+EIFGENs/
+*.exe
+*.dll
+*.obj
+*.pdb
+
+# Logs
+*.log
+
+# Temporary files
+*.tmp
+*.bak
+
+# IDE files
+.idea/
+*.swp
+
+# Distribution
+dist/
+
+# Bin directory (large DLLs - download separately)
+bin/
+
+# Keep Clib/*.lib for linking (required for build)
+# Clib/graphviz headers are also required
