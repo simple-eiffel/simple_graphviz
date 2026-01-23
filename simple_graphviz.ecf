@@ -85,6 +85,7 @@
 		<setting name="console_application" value="true"/>
 		<!-- ISE testing library -->
 		<library name="testing" location="$ISE_LIBRARY/library/testing/testing.ecf"/>
+				<library name="simple_testing" location="$SIMPLE_EIFFEL\simple_testing\simple_testing.ecf"/>
 		<cluster name="test" location=".\test\" recursive="true"/>
 	</target>
 </system>
