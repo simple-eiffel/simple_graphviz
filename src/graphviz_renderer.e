@@ -31,15 +31,15 @@ feature {NONE} -- Initialization
 		end
 
 	make
-			-- Create renderer with default 30s timeout and "dot" engine.
+			-- Create renderer with default 30s timeout and "neato" engine (fallback: dot, fdp).
 		do
 			timeout_ms := 30_000
-			engine := "dot"
+			engine := "neato"
 			-- Initialize GraphViz context
 			gvc_context := c_gv_context
 		ensure
 			default_timeout: timeout_ms = 30_000
-			default_engine: engine.same_string ("dot")
+			default_engine: engine.same_string ("neato")
 			context_created: gvc_context /= default_pointer
 		end
 
@@ -254,13 +254,24 @@ feature -- Rendering
 					create l_error.make ({GRAPHVIZ_ERROR}.Invalid_dot, "Failed to parse DOT source")
 					create Result.make_failure (l_error)
 				else
-					-- Apply layout
+					-- Apply layout (with fallback to alternate engines)
 					create l_engine_c.make (engine)
 					l_layout_result := c_gv_layout (gvc_context, l_graph, l_engine_c.item)
 
+					-- Fallback: if primary engine fails, try alternate engines
+					if l_layout_result /= 0 then
+						if engine.same_string ("dot") then
+							create l_engine_c.make ("neato")
+							l_layout_result := c_gv_layout (gvc_context, l_graph, l_engine_c.item)
+						elseif engine.same_string ("neato") then
+							create l_engine_c.make ("fdp")
+							l_layout_result := c_gv_layout (gvc_context, l_graph, l_engine_c.item)
+						end
+					end
+
 					if l_layout_result /= 0 then
 						c_agclose (l_graph)
-						create l_error.make ({GRAPHVIZ_ERROR}.Invalid_dot, "Layout failed for engine: " + engine)
+						create l_error.make ({GRAPHVIZ_ERROR}.Invalid_dot, "Layout failed for engines: " + engine + ", neato, fdp")
 						create Result.make_failure (l_error)
 					else
 						-- Apply physics post-processing if enabled
@@ -323,13 +334,24 @@ feature -- Rendering
 					create l_error.make ({GRAPHVIZ_ERROR}.Invalid_dot, "Failed to parse DOT source")
 					create Result.make_failure (l_error)
 				else
-					-- Apply layout
+					-- Apply layout (with fallback to alternate engines)
 					create l_engine_c.make (engine)
 					l_layout_result := c_gv_layout (gvc_context, l_graph, l_engine_c.item)
 
+					-- Fallback: if primary engine fails, try alternate engines
+					if l_layout_result /= 0 then
+						if engine.same_string ("dot") then
+							create l_engine_c.make ("neato")
+							l_layout_result := c_gv_layout (gvc_context, l_graph, l_engine_c.item)
+						elseif engine.same_string ("neato") then
+							create l_engine_c.make ("fdp")
+							l_layout_result := c_gv_layout (gvc_context, l_graph, l_engine_c.item)
+						end
+					end
+
 					if l_layout_result /= 0 then
 						c_agclose (l_graph)
-						create l_error.make ({GRAPHVIZ_ERROR}.Invalid_dot, "Layout failed for engine: " + engine)
+						create l_error.make ({GRAPHVIZ_ERROR}.Invalid_dot, "Layout failed for engines: " + engine + ", neato, fdp")
 						create Result.make_failure (l_error)
 					else
 						-- Apply physics post-processing if enabled

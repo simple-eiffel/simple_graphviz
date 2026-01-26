@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<system xmlns="http://www.eiffel.com/developers/xml/configuration-1-22-0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.eiffel.com/developers/xml/configuration-1-22-0 http://www.eiffel.com/developers/xml/configuration-1-22-0.xsd" name="simple_graphviz" uuid="A1B2C3D4-E5F6-7890-ABCD-EF1234567890" library_target="simple_graphviz">
+<system xmlns="http://www.eiffel.com/developers/xml/configuration-1-22-0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.eiffel.com/developers/xml/configuration-1-22-0 http://www.eiffel.com/developers/xml/configuration-1-22-0.xsd" name="simple_graphviz" uuid="0937a1fb-0b71-4e7a-9f99-3f24de93c9ab" library_target="simple_graphviz">
 	<description>General-purpose GraphViz library for Eiffel - generates diagrams using DOT language</description>
 	<target name="simple_graphviz">
 		<root all_classes="true"/>

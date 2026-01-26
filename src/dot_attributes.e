@@ -39,8 +39,10 @@ feature -- Model Queries
 			-- Mathematical model of all attributes.
 		do
 			create Result.default_create
-			across internal_table as ic loop
-				Result := Result.updated (@ic.key, ic)
+			across internal_table.current_keys as key loop
+				if attached internal_table.item (key) as l_value then
+					Result := Result.updated (key, l_value)
+				end
 			end
 		end
 
@@ -123,14 +125,16 @@ feature -- Conversion
 				create Result.make (50)
 				Result.append_character ('[')
 				l_first := True
-				across internal_table as ic loop
-					if not l_first then
-						Result.append_string (", ")
+				across internal_table.current_keys as key loop
+					if attached internal_table.item (key) as l_value then
+						if not l_first then
+							Result.append_string (", ")
+						end
+						Result.append_string (key)
+						Result.append_character ('=')
+						Result.append_string (escape_value (l_value))
+						l_first := False
 					end
-					Result.append_string (@ic.key)
-					Result.append_character ('=')
-					Result.append_string (escape_value (ic))
-					l_first := False
 				end
 				Result.append_character (']')
 			end
@@ -144,7 +148,7 @@ feature -- Utilities
 
 	escape_value (a_value: STRING): STRING
 			-- `a_value` with DOT special characters escaped.
-			-- Quotes strings containing spaces, quotes, or special chars.
+			-- Quotes strings containing spaces, quotes, special chars, or record syntax.
 		require
 			value_not_void: a_value /= Void
 		local
@@ -156,7 +160,7 @@ feature -- Utilities
 			l_needs_quotes := False
 			from i := 1 until i > a_value.count or l_needs_quotes loop
 				c := a_value.item (i)
-				if c = ' ' or c = '"' or c = '\' or c = '%N' or c = ',' or c = '=' then
+				if c = ' ' or c = '"' or c = '\' or c = '%N' or c = ',' or c = '=' or c = '{' or c = '}' or c = '|' then
 					l_needs_quotes := True
 				end
 				i := i + 1

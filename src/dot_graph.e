@@ -325,12 +325,14 @@ feature -- Conversion
 			Result.append_string (" {%N")
 
 			-- Graph attributes
-			across internal_table_from_attributes as ic loop
-				Result.append_string ("    ")
-				Result.append_string (@ic.key)
-				Result.append_character ('=')
-				Result.append_string (attributes.escape_value (ic))
-				Result.append_string (";%N")
+			across internal_table_from_attributes.current_keys as key loop
+				if attached internal_table_from_attributes.item (key) as l_value then
+					Result.append_string ("    ")
+					Result.append_string (key)
+					Result.append_character ('=')
+					Result.append_string (attributes.escape_value (l_value))
+					Result.append_string (";%N")
+				end
 			end
 
 			-- Subgraphs

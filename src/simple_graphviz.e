@@ -123,7 +123,7 @@ feature -- Builder Access
 	graph: DOT_GRAPH
 			-- Get a new directed graph for custom building.
 		do
-			create Result.make_digraph ("Graph")
+			create Result.make_digraph ("G")
 		ensure
 			result_not_void: Result /= Void
 			is_directed: Result.is_directed
@@ -132,7 +132,7 @@ feature -- Builder Access
 	undirected_graph: DOT_GRAPH
 			-- Get a new undirected graph for custom building.
 		do
-			create Result.make_graph ("Graph")
+			create Result.make_graph ("G")
 		ensure
 			result_not_void: Result /= Void
 			not_directed: not Result.is_directed
