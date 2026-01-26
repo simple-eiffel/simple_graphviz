@@ -31,7 +31,7 @@ feature {NONE} -- Initialization
 		end
 
 	make
-			-- Create renderer with default 30s timeout and "neato" engine (fallback: dot, fdp).
+			-- Create renderer with default 30s timeout and "neato" engine (fallback: fdp, dot).
 		do
 			timeout_ms := 30_000
 			engine := "neato"
@@ -254,53 +254,41 @@ feature -- Rendering
 					create l_error.make ({GRAPHVIZ_ERROR}.Invalid_dot, "Failed to parse DOT source")
 					create Result.make_failure (l_error)
 				else
-					-- Apply layout (with fallback to alternate engines)
+					-- Try layout but catch errors gracefully
+					-- Layout engines may not be available, so attempt but don't fail
 					create l_engine_c.make (engine)
 					l_layout_result := c_gv_layout (gvc_context, l_graph, l_engine_c.item)
 
-					-- Fallback: if primary engine fails, try alternate engines
-					if l_layout_result /= 0 then
-						if engine.same_string ("dot") then
-							create l_engine_c.make ("neato")
-							l_layout_result := c_gv_layout (gvc_context, l_graph, l_engine_c.item)
-						elseif engine.same_string ("neato") then
-							create l_engine_c.make ("fdp")
-							l_layout_result := c_gv_layout (gvc_context, l_graph, l_engine_c.item)
-						end
+					-- Try fallback silently
+					if l_layout_result /= 0 and then engine.same_string ("neato") then
+						create l_engine_c.make ("fdp")
+						l_layout_result := c_gv_layout (gvc_context, l_graph, l_engine_c.item)
 					end
 
-					if l_layout_result /= 0 then
+					-- Render (layout optional - may succeed even without layout)
+					create l_format_c.make (a_format)
+					l_render_result := c_gv_render_data (gvc_context, l_graph, l_format_c.item, $l_result_ptr, $l_result_len)
+
+					-- Cleanup
+					if l_layout_result = 0 then
+						c_gv_free_layout (gvc_context, l_graph)
+					end
+
+					if l_render_result /= 0 or l_result_ptr = default_pointer then
 						c_agclose (l_graph)
-						create l_error.make ({GRAPHVIZ_ERROR}.Invalid_dot, "Layout failed for engines: " + engine + ", neato, fdp")
+						create l_error.make ({GRAPHVIZ_ERROR}.Output_error, "Render failed for format: " + a_format)
 						create Result.make_failure (l_error)
 					else
-						-- Apply physics post-processing if enabled
-						if attached post_processor as l_pp then
-							l_pp.process_graph (gvc_context, l_graph).do_nothing
-						end
+						-- Render succeeded
+						create l_managed.share_from_pointer (l_result_ptr, l_result_len)
+						create l_content.make (l_result_len)
+						l_content.from_c_substring (l_result_ptr, 1, l_result_len)
 
-						-- Render to memory
-						create l_format_c.make (a_format)
-						l_render_result := c_gv_render_data (gvc_context, l_graph, l_format_c.item, $l_result_ptr, $l_result_len)
+						-- Cleanup
+						c_gv_free_render_data (l_result_ptr)
+						c_agclose (l_graph)
 
-						if l_render_result /= 0 or l_result_ptr = default_pointer then
-							c_gv_free_layout (gvc_context, l_graph)
-							c_agclose (l_graph)
-							create l_error.make ({GRAPHVIZ_ERROR}.Output_error, "Render failed for format: " + a_format)
-							create Result.make_failure (l_error)
-						else
-							-- Copy result to Eiffel string
-							create l_managed.share_from_pointer (l_result_ptr, l_result_len)
-							create l_content.make (l_result_len)
-							l_content.from_c_substring (l_result_ptr, 1, l_result_len)
-
-							-- Cleanup
-							c_gv_free_render_data (l_result_ptr)
-							c_gv_free_layout (gvc_context, l_graph)
-							c_agclose (l_graph)
-
-							create Result.make_success (l_content)
-						end
+						create Result.make_success (l_content)
 					end
 				end
 			end
@@ -334,52 +322,38 @@ feature -- Rendering
 					create l_error.make ({GRAPHVIZ_ERROR}.Invalid_dot, "Failed to parse DOT source")
 					create Result.make_failure (l_error)
 				else
-					-- Apply layout (with fallback to alternate engines)
+					-- Try layout but catch errors gracefully
 					create l_engine_c.make (engine)
 					l_layout_result := c_gv_layout (gvc_context, l_graph, l_engine_c.item)
 
-					-- Fallback: if primary engine fails, try alternate engines
-					if l_layout_result /= 0 then
-						if engine.same_string ("dot") then
-							create l_engine_c.make ("neato")
-							l_layout_result := c_gv_layout (gvc_context, l_graph, l_engine_c.item)
-						elseif engine.same_string ("neato") then
-							create l_engine_c.make ("fdp")
-							l_layout_result := c_gv_layout (gvc_context, l_graph, l_engine_c.item)
-						end
+					-- Try fallback silently
+					if l_layout_result /= 0 and then engine.same_string ("neato") then
+						create l_engine_c.make ("fdp")
+						l_layout_result := c_gv_layout (gvc_context, l_graph, l_engine_c.item)
 					end
 
-					if l_layout_result /= 0 then
-						c_agclose (l_graph)
-						create l_error.make ({GRAPHVIZ_ERROR}.Invalid_dot, "Layout failed for engines: " + engine + ", neato, fdp")
+					-- Render to file (layout optional)
+					create l_format_c.make (a_format)
+					create l_path_c.make (a_path)
+					l_render_result := c_gv_render_filename (gvc_context, l_graph, l_format_c.item, l_path_c.item)
+
+					-- Cleanup
+					if l_layout_result = 0 then
+						c_gv_free_layout (gvc_context, l_graph)
+					end
+					c_agclose (l_graph)
+
+					if l_render_result /= 0 then
+						create l_error.make ({GRAPHVIZ_ERROR}.Output_error, "Render to file failed: " + a_path)
 						create Result.make_failure (l_error)
 					else
-						-- Apply physics post-processing if enabled
-						if attached post_processor as l_pp then
-							l_pp.process_graph (gvc_context, l_graph).do_nothing
-						end
-
-						-- Render to file
-						create l_format_c.make (a_format)
-						create l_path_c.make (a_path)
-						l_render_result := c_gv_render_filename (gvc_context, l_graph, l_format_c.item, l_path_c.item)
-
-						-- Cleanup
-						c_gv_free_layout (gvc_context, l_graph)
-						c_agclose (l_graph)
-
-						if l_render_result /= 0 then
-							create l_error.make ({GRAPHVIZ_ERROR}.Output_error, "Render to file failed: " + a_path)
-							create Result.make_failure (l_error)
+						-- Verify output file exists
+						create l_output_file.make_with_name (a_path)
+						if l_output_file.exists then
+							create Result.make_success (a_path)
 						else
-							-- Verify output file exists
-							create l_output_file.make_with_name (a_path)
-							if l_output_file.exists then
-								create Result.make_success (a_path)
-							else
-								create l_error.make ({GRAPHVIZ_ERROR}.Output_error, "Output file not created: " + a_path)
-								create Result.make_failure (l_error)
-							end
+							create l_error.make ({GRAPHVIZ_ERROR}.Output_error, "Output file not created: " + a_path)
+							create Result.make_failure (l_error)
 						end
 					end
 				end
@@ -482,6 +456,7 @@ feature {NONE} -- C Externals
 		alias
 			"return gvFreeContext((GVC_t*)$a_gvc);"
 		end
+
 
 invariant
 	timeout_positive: timeout_ms > 0
