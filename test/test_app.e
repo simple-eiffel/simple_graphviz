@@ -754,7 +754,7 @@ feature {NONE} -- Renderer Tests
 			l_renderer: GRAPHVIZ_RENDERER
 		do
 			create l_renderer.make
-			report ("renderer_creation", l_renderer.engine.same_string ("dot") and l_renderer.timeout_ms = 30_000)
+			report ("renderer_creation", l_renderer.engine.same_string ("neato") and l_renderer.timeout_ms = 30_000)
 		rescue
 			report ("renderer_creation", False)
 		end

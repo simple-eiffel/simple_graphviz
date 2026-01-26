@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<system xmlns="http://www.eiffel.com/developers/xml/configuration-1-22-0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.eiffel.com/developers/xml/configuration-1-22-0 http://www.eiffel.com/developers/xml/configuration-1-22-0.xsd" name="simple_graphviz" uuid="0937a1fb-0b71-4e7a-9f99-3f24de93c9ab" library_target="simple_graphviz">
+<system xmlns="http://www.eiffel.com/developers/xml/configuration-1-23-0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.eiffel.com/developers/xml/configuration-1-23-0 http://www.eiffel.com/developers/xml/configuration-1-23-0.xsd" name="simple_graphviz" uuid="0937A1FB-0B71-4E7A-9F99-3F24DE93C9AB" library_target="simple_graphviz">
 	<description>General-purpose GraphViz library for Eiffel - generates diagrams using DOT language</description>
 	<target name="simple_graphviz">
 		<root all_classes="true"/>
@@ -18,14 +18,6 @@
 			<concurrency support="scoop"/>
 			<void_safety support="all"/>
 		</capability>
-		<!-- ISE allowed (no simple_* equivalent) -->
-		<library name="base" location="$ISE_LIBRARY/library/base/base.ecf"/>
-		<!-- simple_* preferred -->
-		<library name="simple_mml" location="$SIMPLE_EIFFEL/simple_mml/simple_mml.ecf"/>
-		<library name="simple_logger" location="$SIMPLE_EIFFEL/simple_logger/simple_logger.ecf"/>
-		<library name="simple_eiffel_parser" location="$SIMPLE_EIFFEL/simple_eiffel_parser/simple_eiffel_parser.ecf"/>
-		<library name="simple_xml" location="$SIMPLE_EIFFEL/simple_xml/simple_xml.ecf"/>
-		<!-- GraphViz C library integration -->
 		<external_include location="$SIMPLE_EIFFEL\simple_graphviz\Clib"/>
 		<external_library location="$SIMPLE_EIFFEL\simple_graphviz\Clib\gvc.lib"/>
 		<external_library location="$SIMPLE_EIFFEL\simple_graphviz\Clib\cgraph.lib"/>
@@ -34,6 +26,11 @@
 		<external_library location="$SIMPLE_EIFFEL\simple_graphviz\Clib\gvplugin_dot_layout.lib"/>
 		<external_library location="$SIMPLE_EIFFEL\simple_graphviz\Clib\gvplugin_neato_layout.lib"/>
 		<external_library location="$SIMPLE_EIFFEL\simple_graphviz\Clib\pathplan.lib"/>
+		<library name="base" location="$ISE_LIBRARY\library\base\base.ecf"/>
+		<library name="simple_eiffel_parser" location="$SIMPLE_EIFFEL\simple_eiffel_parser\simple_eiffel_parser.ecf"/>
+		<library name="simple_logger" location="$SIMPLE_EIFFEL\simple_logger\simple_logger.ecf"/>
+		<library name="simple_mml" location="$SIMPLE_EIFFEL\simple_mml\simple_mml.ecf"/>
+		<library name="simple_xml" location="$SIMPLE_EIFFEL\simple_xml\simple_xml.ecf"/>
 		<cluster name="src" location=".\src\" recursive="true"/>
 	</target>
 	<target name="simple_graphviz_cli" extends="simple_graphviz">
@@ -57,11 +54,6 @@
 			<concurrency support="scoop"/>
 			<void_safety support="all"/>
 		</capability>
-		<library name="base" location="$ISE_LIBRARY/library/base/base.ecf"/>
-		<library name="simple_mml" location="$SIMPLE_EIFFEL/simple_mml/simple_mml.ecf"/>
-		<library name="simple_logger" location="$SIMPLE_EIFFEL/simple_logger/simple_logger.ecf"/>
-		<library name="simple_eiffel_parser" location="$SIMPLE_EIFFEL/simple_eiffel_parser/simple_eiffel_parser.ecf"/>
-		<library name="simple_xml" location="$SIMPLE_EIFFEL/simple_xml/simple_xml.ecf"/>
 		<external_include location="$SIMPLE_EIFFEL\simple_graphviz\Clib"/>
 		<external_library location="$SIMPLE_EIFFEL\simple_graphviz\Clib\gvc.lib"/>
 		<external_library location="$SIMPLE_EIFFEL\simple_graphviz\Clib\cgraph.lib"/>
@@ -70,6 +62,11 @@
 		<external_library location="$SIMPLE_EIFFEL\simple_graphviz\Clib\gvplugin_dot_layout.lib"/>
 		<external_library location="$SIMPLE_EIFFEL\simple_graphviz\Clib\gvplugin_neato_layout.lib"/>
 		<external_library location="$SIMPLE_EIFFEL\simple_graphviz\Clib\pathplan.lib"/>
+		<library name="base" location="$ISE_LIBRARY\library\base\base.ecf"/>
+		<library name="simple_eiffel_parser" location="$SIMPLE_EIFFEL\simple_eiffel_parser\simple_eiffel_parser.ecf"/>
+		<library name="simple_logger" location="$SIMPLE_EIFFEL\simple_logger\simple_logger.ecf"/>
+		<library name="simple_mml" location="$SIMPLE_EIFFEL\simple_mml\simple_mml.ecf"/>
+		<library name="simple_xml" location="$SIMPLE_EIFFEL\simple_xml\simple_xml.ecf"/>
 		<cluster name="src" location=".\src\" recursive="true"/>
 	</target>
 	<target name="simple_graphviz_tests" extends="simple_graphviz">
@@ -83,9 +80,9 @@
 			<assertions precondition="true" postcondition="true" check="true" invariant="true" loop="true" supplier_precondition="true"/>
 		</option>
 		<setting name="console_application" value="true"/>
-		<!-- ISE testing library -->
-		<library name="testing" location="$ISE_LIBRARY/library/testing/testing.ecf"/>
-				<library name="simple_testing" location="$SIMPLE_EIFFEL\simple_testing\simple_testing.ecf"/>
+		<setting name="executable_name" value="test_runner"/>
+		<library name="simple_testing" location="$SIMPLE_EIFFEL\simple_testing\simple_testing.ecf"/>
+		<library name="testing" location="$ISE_LIBRARY\library\testing\testing.ecf"/>
 		<cluster name="test" location=".\test\" recursive="true"/>
 	</target>
 </system>
