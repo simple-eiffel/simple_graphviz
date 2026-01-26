@@ -32,10 +32,26 @@ feature {NONE} -- Initialization
 
 	make
 			-- Create renderer with default 30s timeout and "neato" engine (fallback: fdp, dot).
+		local
+			l_bin_path_c: C_STRING
+			l_var_c: C_STRING
 		do
 			timeout_ms := 30_000
 			engine := "neato"
-			-- Initialize GraphViz context
+
+			-- Configure GraphViz to find plugins in bin folder
+			-- Must set environment variables at C level BEFORE GraphViz context is created
+			create l_bin_path_c.make ("D:\prod\simple_graphviz\bin")
+
+			-- Set GVPLUGINDIR environment variable at C level
+			create l_var_c.make ("GVPLUGINDIR")
+			c_set_env_var (l_var_c.item, l_bin_path_c.item).do_nothing
+
+			-- Set GVBINDIR environment variable at C level
+			create l_var_c.make ("GVBINDIR")
+			c_set_env_var (l_var_c.item, l_bin_path_c.item).do_nothing
+
+			-- Initialize GraphViz context (now that plugin paths are configured)
 			gvc_context := c_gv_context
 		ensure
 			default_timeout: timeout_ms = 30_000
@@ -457,6 +473,13 @@ feature {NONE} -- C Externals
 			"return gvFreeContext((GVC_t*)$a_gvc);"
 		end
 
+	c_set_env_var (a_var, a_value: POINTER): INTEGER
+			-- Set environment variable at C level (required before GraphViz loads plugins).
+		external
+			"C inline use <stdlib.h>"
+		alias
+			"return _putenv_s((const char*)$a_var, (const char*)$a_value);"
+		end
 
 invariant
 	timeout_positive: timeout_ms > 0
