@@ -187,7 +187,7 @@ feature {NONE} -- Source Parsing
 
 			if l_dir.exists then
 				l_dir.open_read
-				l_entries := l_dir.linear_representation
+				l_entries := l_dir.entries
 
 				across l_entries as ic loop
 					if not ic.same_string (".") and not ic.same_string ("..") then
