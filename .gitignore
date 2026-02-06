@@ -24,3 +24,5 @@ bin/
 
 # Keep Clib/*.lib for linking (required for build)
 # Clib/graphviz headers are also required
+*.melted
+*.epr
