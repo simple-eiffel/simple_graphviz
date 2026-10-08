@@ -177,7 +177,8 @@ feature {NONE} -- Source Parsing
 			-- Find all .e files in `a_directory' recursively.
 		local
 			l_dir: DIRECTORY
-			l_entries: ARRAYED_LIST [STRING_8]
+			l_entries: ARRAYED_LIST [PATH]
+			l_name: STRING
 			l_path: STRING
 			l_file: RAW_FILE
 			l_subdir_files: ARRAYED_LIST [STRING]
@@ -190,14 +191,15 @@ feature {NONE} -- Source Parsing
 				l_entries := l_dir.entries
 
 				across l_entries as ic loop
-					if not ic.same_string (".") and not ic.same_string ("..") then
-						l_path := a_directory + "/" + ic.to_string_8
+					l_name := ic.name.to_string_8
+					if not l_name.same_string (".") and not l_name.same_string ("..") then
+						l_path := a_directory + "/" + l_name
 
 						create l_file.make_with_name (l_path)
 						if l_file.exists then
 							if l_file.is_directory then
 								-- Recurse into subdirectory (skip EIFGENs)
-								if not ic.same_string ("EIFGENs") then
+								if not l_name.same_string ("EIFGENs") then
 									l_subdir_files := find_eiffel_files (l_path)
 									across l_subdir_files as ic_sub loop
 										Result.extend (ic_sub)
