@@ -2,6 +2,11 @@
 
 All notable changes to simple_graphviz will be documented in this file.
 
+## [Unreleased] - 2026-10-08
+
+### Fixed
+- Fixed VJAR in `find_eiffel_files`: `DIRECTORY.entries` returns PATH entries.
+
 ## [1.0.0] - 2026-01-22
 
 ### Added
