@@ -18,14 +18,61 @@
 			<concurrency support="scoop"/>
 			<void_safety support="all"/>
 		</capability>
-		<external_include location="$SIMPLE_EIFFEL\simple_graphviz\Clib"/>
-		<external_library location="$SIMPLE_EIFFEL\simple_graphviz\Clib\gvc.lib"/>
-		<external_library location="$SIMPLE_EIFFEL\simple_graphviz\Clib\cgraph.lib"/>
-		<external_library location="$SIMPLE_EIFFEL\simple_graphviz\Clib\cdt.lib"/>
-		<external_library location="$SIMPLE_EIFFEL\simple_graphviz\Clib\gvplugin_core.lib"/>
-		<external_library location="$SIMPLE_EIFFEL\simple_graphviz\Clib\gvplugin_dot_layout.lib"/>
-		<external_library location="$SIMPLE_EIFFEL\simple_graphviz\Clib\gvplugin_neato_layout.lib"/>
-		<external_library location="$SIMPLE_EIFFEL\simple_graphviz\Clib\pathplan.lib"/>
+		<external_cflag value="-I/opt/homebrew/opt/graphviz/include">
+			<condition>
+				<platform value="macintosh"/>
+			</condition>
+		</external_cflag>
+		<external_linker_flag value="-L/opt/homebrew/opt/graphviz/lib -lgvc -lcgraph -lcdt">
+			<condition>
+				<platform value="macintosh"/>
+			</condition>
+		</external_linker_flag>
+		<external_linker_flag value="-lgvc -lcgraph -lcdt">
+			<condition>
+				<platform value="unix"/>
+			</condition>
+		</external_linker_flag>
+		<external_include location="$(SIMPLE_EIFFEL)/simple_graphviz/Clib">
+			<condition>
+				<platform value="windows"/>
+			</condition>
+		</external_include>
+		<external_library location="$(SIMPLE_EIFFEL)/simple_graphviz/Clib/gvc.lib">
+			<condition>
+				<platform value="windows"/>
+			</condition>
+		</external_library>
+		<external_library location="$(SIMPLE_EIFFEL)/simple_graphviz/Clib/cgraph.lib">
+			<condition>
+				<platform value="windows"/>
+			</condition>
+		</external_library>
+		<external_library location="$(SIMPLE_EIFFEL)/simple_graphviz/Clib/cdt.lib">
+			<condition>
+				<platform value="windows"/>
+			</condition>
+		</external_library>
+		<external_library location="$(SIMPLE_EIFFEL)/simple_graphviz/Clib/gvplugin_core.lib">
+			<condition>
+				<platform value="windows"/>
+			</condition>
+		</external_library>
+		<external_library location="$(SIMPLE_EIFFEL)/simple_graphviz/Clib/gvplugin_dot_layout.lib">
+			<condition>
+				<platform value="windows"/>
+			</condition>
+		</external_library>
+		<external_library location="$(SIMPLE_EIFFEL)/simple_graphviz/Clib/gvplugin_neato_layout.lib">
+			<condition>
+				<platform value="windows"/>
+			</condition>
+		</external_library>
+		<external_library location="$(SIMPLE_EIFFEL)/simple_graphviz/Clib/pathplan.lib">
+			<condition>
+				<platform value="windows"/>
+			</condition>
+		</external_library>
 		<library name="base" location="$ISE_LIBRARY\library\base\base.ecf"/>
 		<library name="simple_eiffel_parser" location="$SIMPLE_EIFFEL\simple_eiffel_parser\simple_eiffel_parser.ecf"/>
 		<library name="simple_logger" location="$SIMPLE_EIFFEL\simple_logger\simple_logger.ecf"/>
@@ -54,14 +101,61 @@
 			<concurrency support="scoop"/>
 			<void_safety support="all"/>
 		</capability>
-		<external_include location="$SIMPLE_EIFFEL\simple_graphviz\Clib"/>
-		<external_library location="$SIMPLE_EIFFEL\simple_graphviz\Clib\gvc.lib"/>
-		<external_library location="$SIMPLE_EIFFEL\simple_graphviz\Clib\cgraph.lib"/>
-		<external_library location="$SIMPLE_EIFFEL\simple_graphviz\Clib\cdt.lib"/>
-		<external_library location="$SIMPLE_EIFFEL\simple_graphviz\Clib\gvplugin_core.lib"/>
-		<external_library location="$SIMPLE_EIFFEL\simple_graphviz\Clib\gvplugin_dot_layout.lib"/>
-		<external_library location="$SIMPLE_EIFFEL\simple_graphviz\Clib\gvplugin_neato_layout.lib"/>
-		<external_library location="$SIMPLE_EIFFEL\simple_graphviz\Clib\pathplan.lib"/>
+		<external_cflag value="-I/opt/homebrew/opt/graphviz/include">
+			<condition>
+				<platform value="macintosh"/>
+			</condition>
+		</external_cflag>
+		<external_linker_flag value="-L/opt/homebrew/opt/graphviz/lib -lgvc -lcgraph -lcdt">
+			<condition>
+				<platform value="macintosh"/>
+			</condition>
+		</external_linker_flag>
+		<external_linker_flag value="-lgvc -lcgraph -lcdt">
+			<condition>
+				<platform value="unix"/>
+			</condition>
+		</external_linker_flag>
+		<external_include location="$(SIMPLE_EIFFEL)/simple_graphviz/Clib">
+			<condition>
+				<platform value="windows"/>
+			</condition>
+		</external_include>
+		<external_library location="$(SIMPLE_EIFFEL)/simple_graphviz/Clib/gvc.lib">
+			<condition>
+				<platform value="windows"/>
+			</condition>
+		</external_library>
+		<external_library location="$(SIMPLE_EIFFEL)/simple_graphviz/Clib/cgraph.lib">
+			<condition>
+				<platform value="windows"/>
+			</condition>
+		</external_library>
+		<external_library location="$(SIMPLE_EIFFEL)/simple_graphviz/Clib/cdt.lib">
+			<condition>
+				<platform value="windows"/>
+			</condition>
+		</external_library>
+		<external_library location="$(SIMPLE_EIFFEL)/simple_graphviz/Clib/gvplugin_core.lib">
+			<condition>
+				<platform value="windows"/>
+			</condition>
+		</external_library>
+		<external_library location="$(SIMPLE_EIFFEL)/simple_graphviz/Clib/gvplugin_dot_layout.lib">
+			<condition>
+				<platform value="windows"/>
+			</condition>
+		</external_library>
+		<external_library location="$(SIMPLE_EIFFEL)/simple_graphviz/Clib/gvplugin_neato_layout.lib">
+			<condition>
+				<platform value="windows"/>
+			</condition>
+		</external_library>
+		<external_library location="$(SIMPLE_EIFFEL)/simple_graphviz/Clib/pathplan.lib">
+			<condition>
+				<platform value="windows"/>
+			</condition>
+		</external_library>
 		<library name="base" location="$ISE_LIBRARY\library\base\base.ecf"/>
 		<library name="simple_eiffel_parser" location="$SIMPLE_EIFFEL\simple_eiffel_parser\simple_eiffel_parser.ecf"/>
 		<library name="simple_logger" location="$SIMPLE_EIFFEL\simple_logger\simple_logger.ecf"/>

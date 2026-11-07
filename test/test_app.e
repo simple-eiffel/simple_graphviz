@@ -896,6 +896,7 @@ feature {NONE} -- Adversarial Tests
 			test_adv_attribute_overwrite
 			test_adv_attribute_remove_readd
 			-- Renderer edge cases
+			test_render_svg_really_renders
 			test_adv_renderer_not_found
 			test_adv_result_invariant_success
 			test_adv_result_invariant_failure
@@ -1128,6 +1129,22 @@ feature {NONE} -- Adversarial Tests
 			report ("adv_attribute_remove_readd", l_ok)
 		rescue
 			report ("adv_attribute_remove_readd", False)
+		end
+
+	test_render_svg_really_renders
+			-- A real render: plugins found, SVG out. A renderer that cannot load
+			-- its plugins must fail here, however the other tests read.
+		local
+			l_renderer: GRAPHVIZ_RENDERER
+			l_result: GRAPHVIZ_RESULT
+			l_ok: BOOLEAN
+		do
+			create l_renderer.make
+			l_result := l_renderer.render_svg ("digraph { a -> b }")
+			l_ok := l_result.is_success and then attached l_result.content as l_svg and then l_svg.has_substring ("<svg")
+			report ("render_svg_really_renders", l_ok)
+		rescue
+			report ("render_svg_really_renders", False)
 		end
 
 	test_adv_renderer_not_found
