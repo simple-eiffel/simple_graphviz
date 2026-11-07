@@ -39,17 +39,24 @@ feature {NONE} -- Initialization
 			timeout_ms := 30_000
 			engine := "neato"
 
-			-- Configure GraphViz to find plugins in bin folder
+			-- On Windows, configure GraphViz to find plugins in the library's bin
+			-- folder. Elsewhere the installed GraphViz already knows its own.
 			-- Must set environment variables at C level BEFORE GraphViz context is created
-			create l_bin_path_c.make ("D:\prod\simple_graphviz\bin")
+			if {PLATFORM}.is_windows then
+				if attached (create {EXECUTION_ENVIRONMENT}).item ("SIMPLE_EIFFEL") as l_root then
+					create l_bin_path_c.make (l_root + {STRING_32} "\simple_graphviz\bin")
+				else
+					create l_bin_path_c.make ("simple_graphviz\bin")
+				end
 
-			-- Set GVPLUGINDIR environment variable at C level
-			create l_var_c.make ("GVPLUGINDIR")
-			c_set_env_var (l_var_c.item, l_bin_path_c.item).do_nothing
+				-- Set GVPLUGINDIR environment variable at C level
+				create l_var_c.make ("GVPLUGINDIR")
+				c_set_env_var (l_var_c.item, l_bin_path_c.item).do_nothing
 
-			-- Set GVBINDIR environment variable at C level
-			create l_var_c.make ("GVBINDIR")
-			c_set_env_var (l_var_c.item, l_bin_path_c.item).do_nothing
+				-- Set GVBINDIR environment variable at C level
+				create l_var_c.make ("GVBINDIR")
+				c_set_env_var (l_var_c.item, l_bin_path_c.item).do_nothing
+			end
 
 			-- Initialize GraphViz context (now that plugin paths are configured)
 			gvc_context := c_gv_context
@@ -440,9 +447,11 @@ feature {NONE} -- C Externals
 		alias
 			"[
 				char* result = NULL;
-				unsigned int len = 0;
+				/* size_t in current Graphviz, unsigned int in older ones: zeroed
+				   storage of the larger size reads right for both. */
+				size_t len = 0;
 				int ret = gvRenderData((GVC_t*)$a_gvc, (Agraph_t*)$a_graph,
-				                        (const char*)$a_format, &result, &len);
+				                        (const char*)$a_format, &result, (void*)&len);
 				*((char**)$a_result_ptr) = result;
 				*((int*)$a_result_len) = (int)len;
 				return ret;
