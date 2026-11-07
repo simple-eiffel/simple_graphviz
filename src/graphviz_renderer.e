@@ -478,7 +478,13 @@ feature {NONE} -- C Externals
 		external
 			"C inline use <stdlib.h>"
 		alias
-			"return _putenv_s((const char*)$a_var, (const char*)$a_value);"
+			"[
+				#if defined(_WIN32) || defined(EIF_WINDOWS)
+					return _putenv_s((const char*)$a_var, (const char*)$a_value);
+				#else
+					return setenv((const char*)$a_var, (const char*)$a_value, 1);
+				#endif
+			]"
 		end
 
 invariant
