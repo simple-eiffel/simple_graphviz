@@ -22,8 +22,37 @@ feature -- Constants
 	Demo_dir: STRING = "demo/inputs/"
 			-- Directory containing demo DOT files.
 
-	Output_dir: STRING = "demo/outputs/"
-			-- Directory for rendered outputs.
+	Output_dir: STRING
+			-- Directory for rendered outputs: a folder of its own under the system's temporary
+			-- folder, so running the tests leaves the repository as it is (port-coordination #17:
+			-- once these ran in the gate, they rewrote the committed demo/outputs). Set
+			-- SIMPLE_GRAPHVIZ_UPDATE_DEMOS to render into demo/outputs/ on purpose.
+		local
+			l_env: EXECUTION_ENVIRONMENT
+			l_dir: DIRECTORY
+			l_temp: STRING
+		once
+			create l_env
+			if attached l_env.item ("SIMPLE_GRAPHVIZ_UPDATE_DEMOS") then
+				Result := "demo/outputs/"
+			else
+				if attached l_env.item ("TMPDIR") as al_t then
+					l_temp := al_t.to_string_8
+				elseif attached l_env.item ("TEMP") as al_t then
+					l_temp := al_t.to_string_8
+				else
+					l_temp := "/tmp"
+				end
+				if not l_temp.is_empty and then (l_temp [l_temp.count] = '/' or l_temp [l_temp.count] = '\') then
+					l_temp.remove_tail (1)
+				end
+				Result := l_temp + "/simple_graphviz_demo_outputs/"
+				create l_dir.make (Result)
+				if not l_dir.exists then
+					l_dir.recursive_create_dir
+				end
+			end
+		end
 
 feature -- Demo Catalog
 
