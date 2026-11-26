@@ -4,6 +4,13 @@ All notable changes to simple_graphviz will be documented in this file.
 
 ## [Unreleased] - 2026-10-08
 
+### Changed
+- 2026-11-26: `Clib/` is Graphviz 16.1.2 (headers and import libraries; 14.1.1 before). Nothing
+  simple_graphviz calls changed: the 16.0.0 breaking changes are `agmemconcat`, the
+  `postaction` attribute, gvmap options and xdot gradient stop counts. `bin/` (not in git) holds
+  the same 60 DLLs as simple_spec_viz/bin, documented in simple_spec_viz/bin/README.md. Suite
+  72/0 from a clean build with only `bin/` and System32 on PATH.
+
 ### Fixed
 - Fixed VJAR in `find_eiffel_files`: `DIRECTORY.entries` returns PATH entries.
 
